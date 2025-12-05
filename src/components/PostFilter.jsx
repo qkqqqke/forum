@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MyInput from './UI/input/MyInput';
 import MySelect from './UI/select/MySelect';
+import { useDebounce } from '../hooks/useDebounce';
 
 const PostFilter = ({ filter, setFilter }) => {
 
+    const [filterInput, setFilterInput] = useState(filter);
+    const debounceValue = useDebounce (filterInput, 500);
+
+    useEffect(()=>{
+        setFilter(filterInput);
+    }, [debounceValue])
 
     return (
         <div>
             <MyInput
                 placeholder={'Поиск'}
-                value={filter.query}
-                onChange={e => setFilter({ ...filter, query: e.target.value })}
+                value={filterInput.query}
+                onChange={e => setFilterInput({ ...filterInput, query: e.target.value })}
             />
             <MySelect
                 value={filter.sort}
