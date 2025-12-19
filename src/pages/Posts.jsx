@@ -25,6 +25,7 @@ function Posts() {
   const [modal, setModal] = useState(false)
   const [totalPages, setTotalPages] = useState(0)
   const [limit, setLimit] = useState(10)
+  const [lastLimit, setLastLimit] = useState(limit)
   const [page, setPage] = useState(1)
   const [template, setTemplate] = useState(postsTemplate)
   const lastElement = useRef()
@@ -33,10 +34,11 @@ function Posts() {
 
 
   const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
-    const responce = await PostService.getAll(limit, page);
-    setPosts([...posts, ...responce.data]);
+    const responce = await PostService.getAll(limit, page); 
+    limit === -1 ? setPosts([...posts, ...responce.data]) : setPosts([...responce.data]);
     const totalCount = responce.headers['x-total-count'];
-    setTotalPages(getPageCount(totalCount, limit))
+    setTotalPages(getPageCount(totalCount, limit));
+    
   });
 
   const changePage = (item) => {
@@ -45,21 +47,16 @@ function Posts() {
   }
 
   useObserver(lastElement, page < totalPages, isPostLoading, () => {
+    if(limit === -1)
     setPage(page + 1)
   })
 
-  useEffect(()=> {
-    if(template.current === 'grid'){
-      //setLimit(-1)
-
-    } else if 
-    (template.current === 'list'){
-      //setLimit(10)
-
-    } else return
-  }, [template])
 
   useEffect(() => {
+    if(limit !== lastLimit){
+      setLastLimit(limit);
+      setPage(1);
+    }
     fetchPosts(limit, page);
   }, [page, limit])
 
