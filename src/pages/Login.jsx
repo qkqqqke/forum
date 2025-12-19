@@ -11,7 +11,7 @@ const Login = () => {
         e.preventDefault();
         setIsAuth(true);
         localStorage.setItem('auth', 'true')
-        navigate2('/posts')
+        navigate('/posts')
 
     }
 

@@ -3,15 +3,15 @@ import { ReactComponent as ListSvg } from '../assets/list.svg'
 import { ReactComponent as GridSvg } from '../assets/grid.svg'
 
 
-const PostViewSwitcher = () => {
+const PostViewSwitcher = ({ template, setTemplate }) => {
     return (
         <div class="view_switcher_container">
-            <button>
-                <ListSvg/>
+            <button onClick={() => setTemplate({ ...template, current: 'list' })}>
+                <ListSvg />
             </button>
 
-            <button>
-                <GridSvg/>
+            <button onClick={() => setTemplate({ ...template, current: 'grid' })}>
+                <GridSvg />
             </button>
         </div>
     );

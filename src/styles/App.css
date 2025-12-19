@@ -6,8 +6,8 @@
 
 #root {
     background-color: #484e52;
+    min-height: 100vh;
     color: whitesmoke;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -98,6 +98,14 @@
 
 .navbar__links a:not(:first-child){
     margin-left: 10px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+  gap: 20px;
+  padding: 20px;
 }
 
 .view_switcher_container > button{

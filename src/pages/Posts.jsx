@@ -14,6 +14,7 @@ import '../styles/App.css';
 import { getPageCount } from '../utils/pages.js';
 import { useObserver } from "../hooks/useObserver.js";
 import PostViewSwitcher from "../components/PostViewSwitcher.jsx";
+import { postsTemplate } from "../utils/template.js";
 
 
 
@@ -25,6 +26,7 @@ function Posts() {
   const [totalPages, setTotalPages] = useState(0)
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(1)
+  const [template, setTemplate] = useState(postsTemplate)
   const lastElement = useRef()
 
 
@@ -42,10 +44,20 @@ function Posts() {
 
   }
 
-
   useObserver(lastElement, page < totalPages, isPostLoading, () => {
     setPage(page + 1)
   })
+
+  useEffect(()=> {
+    if(template.current === 'grid'){
+      //setLimit(-1)
+
+    } else if 
+    (template.current === 'list'){
+      //setLimit(10)
+
+    } else return
+  }, [template])
 
   useEffect(() => {
     fetchPosts(limit, page);
@@ -75,7 +87,9 @@ function Posts() {
       <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
       <div className="posts__nav">
+        <PostViewSwitcher template={template} setTemplate={setTemplate}/>
         <MySelect
+          style={ template.current === 'grid' ? {display: "none"}:  {}}
           value={limit}
           onChange={value => setLimit(value)}
           defaultValue='Кол-во элементов на странице'
@@ -85,13 +99,12 @@ function Posts() {
             { value: 25, name: '25' },
             { value: -1, name: 'Показать все' },
           ]}></MySelect>
-          <PostViewSwitcher />
       </div>
       {
         postError && <h1>Произошла ошибка ${postError}</h1>
       }
 
-      <PostsList remove={removePost} posts={sortedAndSearchedPosts} title='Посты' />
+      <PostsList remove={removePost} posts={sortedAndSearchedPosts} template={template} title='Посты' />
       <div ref={lastElement} style={{ height: 20 }}></div>
       {
         isPostLoading &&

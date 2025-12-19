@@ -16,7 +16,14 @@ const PostItem = ({ remove, ...props }) => {
                 </div>
             </div>
             <div className="post__btns">
-                <MyButton onClick={() => remove(props.post)}>Удалить</MyButton>
+                <MyButton onClick={
+                    (e) =>{
+                        remove(props.post);
+                        e.stopPropagation();
+                    }
+                    }>
+                    Скрыть
+                </MyButton>
             </div>
         </div>
     );
