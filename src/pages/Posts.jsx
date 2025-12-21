@@ -51,6 +51,16 @@ function Posts() {
     setPage(page + 1)
   })
 
+  useEffect(() => {
+    switch(template.current){
+      case 'grid':
+        setLimit(12);
+        break;
+      case 'list':
+        setLimit(10);
+        break;
+    }
+  }, [template])
 
   useEffect(() => {
     if(limit !== lastLimit){
