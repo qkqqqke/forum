@@ -1,5 +1,5 @@
 import React from 'react';
-import MyButton from './UI/button/MyButton';
+import { ReactComponent as EyeClosed } from '../assets/eye-closed.svg' 
 import { useNavigate } from 'react-router-dom'
 
 const PostItem = ({ remove, ...props }) => {
@@ -15,15 +15,16 @@ const PostItem = ({ remove, ...props }) => {
                     {props.post.body}
                 </div>
             </div>
-            <div className="post__btns">
-                <MyButton onClick={
-                    (e) =>{
-                        remove(props.post);
-                        e.stopPropagation();
-                    }
-                    }>
-                    Скрыть
-                </MyButton>
+            <div className='post__operations'>
+                <div className="post__btns">
+                    <div className='post__svg'>
+                        <EyeClosed onClick={(e) =>{
+                            remove(props.post);
+                            e.stopPropagation();
+                        }}
+                        stroke='whitesmoke'/>
+                    </div>
+                </div>
             </div>
         </div>
     );

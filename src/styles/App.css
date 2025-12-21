@@ -15,10 +15,14 @@
 
 .App {
     max-width: 1000px;
+    h1::first-letter{
+        text-transform: uppercase;
+    }
 }
 
 .post {
     display: flex;
+    flex-direction: column;
     padding: 10px;
     border: 2px solid whitesmoke;
     margin-top: 15px;
@@ -58,8 +62,25 @@
     display: flex;
 }
 
+.post__operations{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    width: 100%;
+}
+
 .post__btns {
     display: flex;
+}
+
+.post__svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    *{
+        height: 1rem;
+        width: 1rem;
+    }
 }
 
 .page {

@@ -28,13 +28,13 @@ const PostIdPage = () => {
     return (
         <div className='App'>
             <h1>
-                Пост номер {params.id}
+                {post.title}
             </h1>
             <div>
                 {isLoading ?
                     <Loader /> :
                     <div>
-                        {post.id}. {post.title}
+                        {post.body}
                     </div>
                 }
             </div>

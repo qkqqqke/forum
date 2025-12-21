@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import PostService from "../API/PostService.js";
 import PostFilter from '../components/PostFilter.jsx'
 import PostForm from "../components/PostForm";
-import PostsList from '../components/PostsList.jsx'
+import PostsList from '../components/PostsList.jsx';
 import Loader from "../components/UI/Loader/Loader.jsx";
 import MyModal from "../components/UI/MyModal/MyModal";
 import MyButton from "../components/UI/button/MyButton";
