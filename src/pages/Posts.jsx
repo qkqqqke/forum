@@ -15,6 +15,7 @@ import { getPageCount } from '../utils/pages.js';
 import { useObserver } from "../hooks/useObserver.js";
 import PostViewSwitcher from "../components/PostViewSwitcher.jsx";
 import { postsTemplate } from "../utils/template.js";
+import axios from "axios";
 
 
 
@@ -34,11 +35,12 @@ function Posts() {
 
 
   const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
-    const responce = await PostService.getAll(limit, page); 
-    limit === -1 ? setPosts([...posts, ...responce.data]) : setPosts([...responce.data]);
-    const totalCount = responce.headers['x-total-count'];
+    const fetchedPosts = await PostService.getAll(limit, page);
+    const newPosts = await PostService.getPostsWithUsersByPosts(fetchedPosts.data);
+    limit === -1 ? setPosts([...posts, ...newPosts]) : setPosts(newPosts);
+    const totalCount = fetchedPosts.headers['x-total-count'];
     setTotalPages(getPageCount(totalCount, limit));
-    
+
   });
 
   const changePage = (item) => {
@@ -47,12 +49,12 @@ function Posts() {
   }
 
   useObserver(lastElement, page < totalPages, isPostLoading, () => {
-    if(limit === -1)
-    setPage(page + 1)
+    if (limit === -1)
+      setPage(page + 1)
   })
 
   useEffect(() => {
-    switch(template.current){
+    switch (template.current) {
       case 'grid':
         setLimit(12);
         break;
@@ -63,7 +65,7 @@ function Posts() {
   }, [template])
 
   useEffect(() => {
-    if(limit !== lastLimit){
+    if (limit !== lastLimit) {
       setLastLimit(limit);
       setPage(1);
     }
@@ -85,7 +87,7 @@ function Posts() {
   return (
     <div className="App">
 
-      <MyButton style={{ marginTop: '30px' }} onClick={() => setModal(true)}>
+      <MyButton onClick={() => setModal(true)}>
         Создать пост
       </MyButton>
       <MyModal visible={modal} setVisible={setModal}>
@@ -94,9 +96,9 @@ function Posts() {
       <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
       <div className="posts__nav">
-        <PostViewSwitcher template={template} setTemplate={setTemplate}/>
+        <PostViewSwitcher template={template} setTemplate={setTemplate} />
         <MySelect
-          style={ template.current === 'grid' ? {display: "none"}:  {}}
+          style={template.current === 'grid' ? { display: "none" } : {}}
           value={limit}
           onChange={value => setLimit(value)}
           defaultValue='Кол-во элементов на странице'

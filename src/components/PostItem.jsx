@@ -1,5 +1,6 @@
-import React from 'react';
-import { ReactComponent as EyeClosed } from '../assets/eye-closed.svg' 
+import React, { useEffect, useState } from 'react';
+import { ReactComponent as EyeClosed } from '../assets/eye-closed.svg' ;
+import { ReactComponent as DefaultAvatar } from '../assets/default-avatar.svg'
 import { useNavigate } from 'react-router-dom'
 
 const PostItem = ({ remove, ...props }) => {
@@ -15,7 +16,15 @@ const PostItem = ({ remove, ...props }) => {
                     {props.post.body}
                 </div>
             </div>
-            <div className='post__operations'>
+            <div className='post__footer'>
+                <div className="post__author">
+                    <div className="post__author__icon">
+                        <DefaultAvatar/>
+                    </div>
+                    <div className="post__author__name">
+                        {props.post.user.username}
+                    </div>
+                </div>
                 <div className="post__btns">
                     <div className='post__svg'>
                         <EyeClosed onClick={(e) =>{
