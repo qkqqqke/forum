@@ -26,7 +26,7 @@ const PostIdPage = () => {
 
 
     return (
-        <div>
+        <div className='App'>
             <h1>
                 Пост номер {params.id}
             </h1>
