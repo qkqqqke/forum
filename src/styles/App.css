@@ -75,6 +75,9 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+    *{
+        cursor: pointer;
+    }
 }
 .post__author__icon{
     *{
@@ -183,5 +186,45 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+}
+
+.user_info{
+    width: 1000px;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.user_about{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.user_name{
+    font-size: 1.5rem;
+}
+
+.user_icon{
+    border: 2px solid #272727;
+    height: 200px;
+    *{
+        height: 100%;
+        width: auto;
+    }
+}
+
+.user_stat{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    *{
+        padding: 5px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #585858;
     }
 }

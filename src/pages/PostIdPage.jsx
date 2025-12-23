@@ -21,7 +21,7 @@ const PostIdPage = () => {
     useEffect(() => {
         fetchPostById(params.id)
         fetchCommentsById(params.id)
-        
+
     }, [])
 
 
@@ -42,21 +42,21 @@ const PostIdPage = () => {
                 Комментарии
             </h1>
             <div>
-            
-            {
-                isCommentsLoading?
-                <Loader/>
-                :
-                comments.length ?
-                    comments.map(
-                        (c) => <div key={c.id} style={{marginTop: 15}}>
-                            <h5>{c.email}</h5>
-                            <div>{c.body}</div>
-                        </div>
-                    )
-                    :
-                <div>No comments yet.</div>
-            }
+
+                {
+                    isCommentsLoading ?
+                        <Loader />
+                        :
+                        comments.length ?
+                            comments.map(
+                                (c) => <div key={c.id} style={{ marginTop: 15 }}>
+                                    <h5>{c.email}</h5>
+                                    <div>{c.body}</div>
+                                </div>
+                            )
+                            :
+                            <div>No comments yet.</div>
+                }
             </div>
 
         </div>

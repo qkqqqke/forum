@@ -23,10 +23,12 @@ export default class PostService {
         return response;
     }
 
-    static async getUserByPostId(id) {
+    static async getUserById(id) {
         const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)
         return response;
     }
+
+
 
     static async getPostsWithUsersByPosts(posts) {
         const usersId = posts.filter((post, index, arr) =>
@@ -34,7 +36,7 @@ export default class PostService {
         ).map(post => post.userId)
 
         const usersReq = await Promise.all(usersId.map(id => {
-            return axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
+            return PostService.getUserById(id);
         }))
 
         const users = usersReq.map((userReq) => userReq.data)

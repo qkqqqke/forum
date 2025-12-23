@@ -7,6 +7,7 @@ const PostItem = ({ remove, ...props }) => {
     const router = useNavigate()
 
     const toPost = () => router(`/posts/${props.post.id}`)
+    const toUser = () => router(`/users/${props.post.userId}`)
 
     return (
         <div className="post" onClick={toPost}>
@@ -17,7 +18,10 @@ const PostItem = ({ remove, ...props }) => {
                 </div>
             </div>
             <div className='post__footer'>
-                <div className="post__author">
+                <div className="post__author" onClick={(e)=>{
+                    toUser();
+                    e.stopPropagation();
+                    }}>
                     <div className="post__author__icon">
                         <DefaultAvatar/>
                     </div>
