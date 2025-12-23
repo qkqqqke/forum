@@ -34,8 +34,7 @@ const PostItem = ({ remove, ...props }) => {
                         <EyeClosed onClick={(e) =>{
                             remove(props.post);
                             e.stopPropagation();
-                        }}
-                        stroke='whitesmoke'/>
+                        }}/>
                     </div>
                 </div>
             </div>

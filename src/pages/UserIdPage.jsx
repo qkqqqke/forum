@@ -1,78 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import Loader from '../components/UI/Loader/Loader';
-import { ReactComponent as DefaultAvatar } from '../assets/default-avatar.svg'
 import { useParams } from 'react-router-dom';
 import { useFetching } from '../hooks/useFetching';
 import PostService from '../API/PostService';
-
+import UserInfo from '../components/UserInfo';
+import PostsList from '../components/PostsList';
+import { usePosts } from '../hooks/usePosts';
 
 const UserIdPage = ({ }) => {
     const params = useParams();
     const [user, setUser] = useState({})
+    const [posts, setPosts] = useState([])
 
-    const [fetchUserById, isLoading, error] = useFetching(async (id) => {
-        const response = await PostService.getUserById(id);
-        setUser(response.data);
+    const [fetchData, isUserLoading, error] = useFetching(async (id) => {
+        const fetchedUser = await PostService.getUserById(id);
+        setUser(fetchedUser.data);
+        const fetchedPosts = await PostService.getPostsByUserId(id);
+        const newPosts = fetchedPosts.data.map((post)=>{
+            return {user: fetchedUser.data, ...post}
+        })
+        setPosts(newPosts);
     })
 
+
     useEffect(() => {
-        console.log(isLoading)
-        fetchUserById(params.id);
+        fetchData(params.id);
     }, [])
+
+    const removePost = (post) => {
+    setPosts(posts.filter((p) => post.id !== p.id))
+  }
+
+    const sortedAndSearchedPosts = usePosts(posts);
 
     return (
         <div className='App'>
-            {isLoading ?
+            {isUserLoading ?
                 <Loader /> :
-                <div className="user_info">
-                    <div className="user_icon">
-                        {
-                            user.icon ?
-                                user.icon :
-                                <DefaultAvatar />
-                        }
-                    </div>
-                    <div className="user_about">
-                        <div>
-                            <div className="user_name">
-                                {user.name}
-                            </div>
-                            <div className="user_bio">
-                                {user.company.catchPhrase}
-                            </div>
-                        </div>
-                        <div>
-                            <div className="user_stat">
-                                <div className='user_message_count'>
-                                    <span>
-                                        Сообщения
-                                    </span>
-                                    <span>
-                                        0
-                                    </span>
-                                </div>
-                                <div className='user_reactions'>
-                                    <span>
-                                        Реакции
-                                    </span>
-                                    <span>
-                                        0
-                                    </span>
-                                </div>
-                                <div className='user_rating_sccore'>
-                                    <span>
-                                        Рейтинг
-                                    </span>
-                                    <span>
-                                        0
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <UserInfo user={user}/>
             }
+            <hr style={{ margin: '15px 0' }} />
+            <PostsList remove={removePost} posts={sortedAndSearchedPosts}/>
         </div>
+        
     );
 };
 

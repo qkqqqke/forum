@@ -28,8 +28,6 @@ export default class PostService {
         return response;
     }
 
-
-
     static async getPostsWithUsersByPosts(posts) {
         const usersId = posts.filter((post, index, arr) =>
             arr.findIndex(el => el.userId === post.userId) === index
@@ -46,6 +44,15 @@ export default class PostService {
                 user: users[users.findIndex(user => user.id === post.userId)]
             }
         })
+    }
+
+    static async getPostsByUserId(userId){
+        const response = await axios.get(`https://jsonplaceholder.typicode.com/posts`,{
+            params: {
+                userId
+            }
+        })
+        return response;
     }
 
 }
