@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactComponent as DefaultAvatar } from '../assets/default-avatar.svg'
 
 
 const UserInfo = ({ user, ...props }) => {
+
+    const [imageUrl, setImageUrl] = useState()
+
+    useEffect(() => {
+        setImageUrl(`https://robohash.org/${user.id}`);
+    }, [user])
+
     return (
         <div className="user_info">
             <div className="user_icon">
                 {
-                    user.icon ?
-                        user.icon :
-                        <DefaultAvatar/>
+                    user ?
+                        <img src={imageUrl} alt="" /> :
+                        <DefaultAvatar />
                 }
             </div>
             <div className="user_about">

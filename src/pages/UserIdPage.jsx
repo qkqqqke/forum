@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Loader from '../components/UI/Loader/Loader';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useFetching } from '../hooks/useFetching';
 import PostService from '../API/PostService';
 import UserInfo from '../components/UserInfo';
@@ -9,6 +9,7 @@ import { usePosts } from '../hooks/usePosts';
 
 const UserIdPage = ({ }) => {
     const params = useParams();
+    const location = useLocation();
     const [user, setUser] = useState({})
     const [posts, setPosts] = useState([])
 
@@ -25,7 +26,7 @@ const UserIdPage = ({ }) => {
 
     useEffect(() => {
         fetchData(params.id);
-    }, [])
+    }, [location])
 
     const removePost = (post) => {
     setPosts(posts.filter((p) => post.id !== p.id))

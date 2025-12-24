@@ -15,7 +15,7 @@ import { getPageCount } from '../utils/pages.js';
 import { useObserver } from "../hooks/useObserver.js";
 import PostViewSwitcher from "../components/PostViewSwitcher.jsx";
 import { postsTemplate } from "../utils/template.js";
-import axios from "axios";
+import addRoboHashUrlToPosts from "../utils/robohash.js";
 
 
 
@@ -37,7 +37,8 @@ function Posts() {
   const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
     const fetchedPosts = await PostService.getAll(limit, page);
     const newPosts = await PostService.getPostsWithUsersByPosts(fetchedPosts.data);
-    limit === -1 ? setPosts([...posts, ...newPosts]) : setPosts(newPosts);
+    const postsWithRoboHash = addRoboHashUrlToPosts(newPosts);
+    limit === -1 ? setPosts([...posts, ...postsWithRoboHash]) : setPosts(postsWithRoboHash);
     const totalCount = fetchedPosts.headers['x-total-count'];
     setTotalPages(getPageCount(totalCount, limit));
 

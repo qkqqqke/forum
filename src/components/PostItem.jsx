@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {} from 'react';
 import { ReactComponent as EyeClosed } from '../assets/eye-closed.svg' ;
 import { ReactComponent as DefaultAvatar } from '../assets/default-avatar.svg'
 import { useNavigate } from 'react-router-dom'
@@ -23,7 +23,12 @@ const PostItem = ({ remove, ...props }) => {
                     e.stopPropagation();
                     }}>
                     <div className="post__author__icon">
-                        <DefaultAvatar/>
+                        {
+                            props.post.user?
+                            <img src={props.post.user.imageUrl}/>
+                            :
+                            <DefaultAvatar/>
+                        }
                     </div>
                     <div className="post__author__name">
                         {props.post.user.username}
