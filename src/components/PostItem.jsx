@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 const PostItem = ({ remove, ...props }) => {
     const router = useNavigate()
 
-    const toPost = () => router(`/posts/${props.post.id}`)
+    const toPost = () => router(`/post/${props.post.id}`)
     const toUser = () => router(`/users/${props.post.userId}`)
 
     return (

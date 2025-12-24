@@ -16,11 +16,12 @@ import { useObserver } from "../hooks/useObserver.js";
 import PostViewSwitcher from "../components/PostViewSwitcher.jsx";
 import { postsTemplate } from "../utils/template.js";
 import addRoboHashUrlToPosts from "../utils/robohash.js";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
 
 function Posts() {
-
+  const { _page } = useParams()
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({ sort: '', query: '' });
   const [modal, setModal] = useState(false)
@@ -31,6 +32,8 @@ function Posts() {
   const [template, setTemplate] = useState(postsTemplate)
   const lastElement = useRef()
 
+  const router = useNavigate()
+  const location = useLocation()
 
 
 
@@ -41,12 +44,10 @@ function Posts() {
     limit === -1 ? setPosts([...posts, ...postsWithRoboHash]) : setPosts(postsWithRoboHash);
     const totalCount = fetchedPosts.headers['x-total-count'];
     setTotalPages(getPageCount(totalCount, limit));
-
   });
 
   const changePage = (item) => {
-    setPage(item);
-
+    router(`/posts/${item}`);
   }
 
   useObserver(lastElement, page < totalPages, isPostLoading, () => {
@@ -72,6 +73,10 @@ function Posts() {
     }
     fetchPosts(limit, page);
   }, [page, limit])
+
+  useEffect(() => {
+    setPage(_page)
+  }, [location])
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
