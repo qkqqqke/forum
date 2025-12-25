@@ -15,7 +15,7 @@ import { getPageCount } from '../utils/pages.js';
 import { useObserver } from "../hooks/useObserver.js";
 import PostViewSwitcher from "../components/PostViewSwitcher.jsx";
 import { postsTemplate } from "../utils/template.js";
-import addRoboHashUrlToPosts from "../utils/robohash.js";
+import { addRoboHashUrlToPosts } from "../utils/robohash.js";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 

@@ -1,39 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import PostService from '../API/PostService';
 import { useFetching } from '../hooks/useFetching';
 import Loader from '../components/UI/Loader/Loader';
 import MyInput from '../components/UI/input/MyInput';
+import { addRoboHashUrlToPosts, addRoboHashUrlToComments } from '../utils/robohash';
+import ContentWrapper from '../components/ContentWrapper';
 
 const PostIdPage = () => {
     const params = useParams();
+    const location = useLocation();
     const [post, setPost] = useState({});
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState({
-        postId: post.id,
+        postId: params.id,
         email: 'newUser@emile.co',
         body: ''
     });
 
     const [fetchPostById, isLoading, error] = useFetching(async (id) => {
         const response = await PostService.getById(id);
-        setPost(response.data);
+        const newPost = (await PostService.getPostsWithUsersByPosts([response.data]))[0];
+        const postWithRoboHash = addRoboHashUrlToPosts([newPost])[0];
+        console.log(postWithRoboHash)
+        setPost(postWithRoboHash);
     })
 
     const [fetchCommentsById, isCommentsLoading, comError] = useFetching(async (id) => {
         const response = await PostService.getCommentsByPostId(id);
-        setComments(response.data);
+        const commentsWithRoboHash = addRoboHashUrlToComments(response.data);
+        setComments(commentsWithRoboHash);
     })
 
     useEffect(() => {
-        fetchPostById(params.id)
-        fetchCommentsById(params.id)
-
-    }, [])
+        fetchPostById(params.id);
+        fetchCommentsById(params.id);
+    }, [location])
 
     const postComment = (e) => {
         e.preventDefault();
-        setComments([...comments, comment]);
+        setComments([...comments, {...comment, imageUrl: `https://robohash.org/${comment.email}` }]);
         setComment({ ...comment, body: '' });
     }
 
@@ -43,29 +49,23 @@ const PostIdPage = () => {
             <h1>
                 {post.title}
             </h1>
-            <div>
-                {isLoading ?
-                    <Loader /> :
-                    <div>
-                        {post.body}
-                    </div>
-                }
-            </div>
+            <ContentWrapper user={post.user} isLoading={isLoading} body={post.body} />
             <h1>
                 Комментарии
             </h1>
             <div>
-
                 {
                     isCommentsLoading ?
                         <Loader />
                         :
                         comments.length ?
                             comments.map(
-                                (c) => <div key={c.id} style={{ marginTop: 15 }}>
-                                    <h5>{c.email}</h5>
-                                    <div>{c.body}</div>
-                                </div>
+                                (c) =>
+                                    <ContentWrapper
+                                        key={c.id}
+                                        user={{ username: c.email, imageUrl: c.imageUrl }}
+                                        body={c.body}
+                                    />
                             )
                             :
                             <div>No comments yet.</div>

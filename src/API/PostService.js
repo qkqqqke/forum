@@ -37,13 +37,15 @@ export default class PostService {
             return PostService.getUserById(id);
         }))
 
-        const users = usersReq.map((userReq) => userReq.data)
-        return posts.map((post) => {
+        const users = usersReq.map((userReq) => userReq.data);
+        
+        const data = posts.map((post) => {
             return {
                 ...post,
                 user: users[users.findIndex(user => user.id === post.userId)]
             }
         })
+        return data
     }
 
     static async getPostsByUserId(userId){
