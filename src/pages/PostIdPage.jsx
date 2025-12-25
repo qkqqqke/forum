@@ -72,7 +72,7 @@ const PostIdPage = () => {
                 }
                 <form onSubmit={postComment}>
                     <MyInput
-                        placeholder='Write comment ...'
+                        placeholder='Write your comment ...'
                         value={comment.body}
                         onChange={(e) => {
                             setComment({
