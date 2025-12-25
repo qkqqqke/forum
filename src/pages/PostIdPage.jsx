@@ -3,11 +3,18 @@ import { useParams } from 'react-router-dom';
 import PostService from '../API/PostService';
 import { useFetching } from '../hooks/useFetching';
 import Loader from '../components/UI/Loader/Loader';
+import MyInput from '../components/UI/input/MyInput';
 
 const PostIdPage = () => {
-    const params = useParams()
-    const [post, setPost] = useState({})
-    const [comments, setComments] = useState([])
+    const params = useParams();
+    const [post, setPost] = useState({});
+    const [comments, setComments] = useState([]);
+    const [comment, setComment] = useState({
+        postId: post.id,
+        email: 'newUser@emile.co',
+        body: ''
+    });
+
     const [fetchPostById, isLoading, error] = useFetching(async (id) => {
         const response = await PostService.getById(id);
         setPost(response.data);
@@ -23,6 +30,12 @@ const PostIdPage = () => {
         fetchCommentsById(params.id)
 
     }, [])
+
+    const postComment = (e) => {
+        e.preventDefault();
+        setComments([...comments, comment]);
+        setComment({ ...comment, body: '' });
+    }
 
 
     return (
@@ -57,6 +70,19 @@ const PostIdPage = () => {
                             :
                             <div>No comments yet.</div>
                 }
+                <form onSubmit={postComment}>
+                    <MyInput
+                        placeholder='Write comment ...'
+                        value={comment.body}
+                        onChange={(e) => {
+                            setComment({
+                                ...comment,
+                                body: e.target.value,
+                                id: comments[comments.length - 1].id + 1
+                            })
+                        }}
+                    />
+                </form>
             </div>
 
         </div>
