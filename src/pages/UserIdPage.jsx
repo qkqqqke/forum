@@ -6,6 +6,7 @@ import PostService from '../API/PostService';
 import UserInfo from '../components/UserInfo';
 import PostsList from '../components/PostsList';
 import { usePosts } from '../hooks/usePosts';
+import { addRoboHashUrlToPosts } from '../utils/robohash';
 
 const UserIdPage = ({ }) => {
     const params = useParams();
@@ -20,7 +21,8 @@ const UserIdPage = ({ }) => {
         const newPosts = fetchedPosts.data.map((post)=>{
             return {user: fetchedUser.data, ...post}
         })
-        setPosts(newPosts);
+        const postsWithRoboHash = addRoboHashUrlToPosts(newPosts);
+        setPosts(postsWithRoboHash);
     })
 
 
