@@ -96,52 +96,6 @@
     }
 }
 
-.content__wrapper {
-    margin: 15px 0;
-    background-color: #313537;
-    border-radius: 10px;
-    padding: 10px;
-    min-height: 150px;
-    display: flex;
-    flex-direction: row;
-}
-
-.content__author{
-    padding: 0 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    width: 150px;
-    min-width: 150px;
-}
-
-.content__separator{
-    width: 1px;
-    margin: -10px 0 -10px 0;
-    background-color: aliceblue;
-}
-
-.content__author > .icon {
-    aspect-ratio: 1/1;
-    height: 100px;
-    width: 100px;
-    * {
-        height: 100%;
-        width: 100%;
-    }
-}
-
-.content__author__username{
-    text-align: center;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.content__body{
-    padding: 0 10px;
-}
 
 .page {
     padding: 10px;

@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import PostService from '../API/PostService';
 import { useFetching } from '../hooks/useFetching';
 import Loader from '../components/UI/Loader/Loader';
-import MyInput from '../components/UI/input/MyInput';
 import { addRoboHashUrlToPosts, addRoboHashUrlToComments } from '../utils/robohash';
-import ContentWrapper from '../components/ContentWrapper';
+import ContentWrapper from '../components/UI/ContentWrapper/ContentWrapper';
+import CommentField from '../components/UI/CommentField/CommentField';
+
 
 const PostIdPage = () => {
     const params = useParams();
     const location = useLocation();
     const [post, setPost] = useState({});
     const [comments, setComments] = useState([]);
+    const [user, setUser] = useState({
+        username: 'newUser@emile.co',
+        imageUrl: `https://robohash.org/newUser@emile.co`
+    });
     const [comment, setComment] = useState({
         postId: params.id,
         email: 'newUser@emile.co',
@@ -22,7 +27,6 @@ const PostIdPage = () => {
         const response = await PostService.getById(id);
         const newPost = (await PostService.getPostsWithUsersByPosts([response.data]))[0];
         const postWithRoboHash = addRoboHashUrlToPosts([newPost])[0];
-        console.log(postWithRoboHash)
         setPost(postWithRoboHash);
     })
 
@@ -38,8 +42,7 @@ const PostIdPage = () => {
     }, [location])
 
     const postComment = (e) => {
-        e.preventDefault();
-        setComments([...comments, {...comment, imageUrl: `https://robohash.org/${comment.email}` }]);
+        setComments([...comments, { ...comment, imageUrl: user.imageUrl }]);
         setComment({ ...comment, body: '' });
     }
 
@@ -49,7 +52,12 @@ const PostIdPage = () => {
             <h1>
                 {post.title}
             </h1>
-            <ContentWrapper user={post.user} isLoading={isLoading} body={post.body} />
+            <ContentWrapper user={post.user} isLoading={isLoading}>
+                <CommentField
+                    readOnly={"readOnly"}
+                    value={post.body}
+                />
+            </ContentWrapper>
             <h1>
                 Комментарии
             </h1>
@@ -64,14 +72,19 @@ const PostIdPage = () => {
                                     <ContentWrapper
                                         key={c.id}
                                         user={{ username: c.email, imageUrl: c.imageUrl }}
-                                        body={c.body}
-                                    />
+                                    >
+                                        <CommentField
+                                            readOnly={"readOnly"}
+                                            value={c.body}
+                                        />
+                                    </ContentWrapper>
                             )
                             :
                             <div>No comments yet.</div>
                 }
-                <form onSubmit={postComment}>
-                    <MyInput
+                <ContentWrapper user={user}>
+                    <CommentField
+                        onSubmit={postComment}
                         placeholder='Write your comment ...'
                         value={comment.body}
                         onChange={(e) => {
@@ -82,7 +95,7 @@ const PostIdPage = () => {
                             })
                         }}
                     />
-                </form>
+                </ContentWrapper>
             </div>
 
         </div>
