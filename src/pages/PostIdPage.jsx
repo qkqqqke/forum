@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import PostService from '../API/PostService';
 import { useFetching } from '../hooks/useFetching';
@@ -6,6 +6,7 @@ import Loader from '../components/UI/Loader/Loader';
 import { addRoboHashUrlToPosts, addRoboHashUrlToComments } from '../utils/robohash';
 import ContentWrapper from '../components/UI/ContentWrapper/ContentWrapper';
 import CommentField from '../components/UI/CommentField/CommentField';
+import { Slide, ToastContainer, toast } from 'react-toastify';
 
 
 const PostIdPage = () => {
@@ -41,9 +42,17 @@ const PostIdPage = () => {
         fetchCommentsById(params.id);
     }, [location])
 
-    const postComment = (e) => {
-        setComments([...comments, { ...comment, imageUrl: user.imageUrl }]);
-        setComment({ ...comment, body: '' });
+    const postComment = async (e) => {
+        const responce = await toast.promise(
+            PostService.setNewPostComment(params.id, comment.body), {
+            success: 'Successfully published',
+            error: 'Rejected'
+        })
+        console.log(responce)
+        if (responce.status >= 200 && responce.status < 300) {
+            setComments([...comments, { ...comment, imageUrl: user.imageUrl }]);
+            setComment({ ...comment, body: '' });
+        }
     }
 
 
@@ -97,7 +106,11 @@ const PostIdPage = () => {
                     />
                 </ContentWrapper>
             </div>
-
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                transition={Slide}
+            />
         </div>
     );
 };

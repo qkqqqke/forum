@@ -57,5 +57,11 @@ export default class PostService {
         return response;
     }
 
+    static async setNewPostComment(postId, body){
+        const response = await axios.post(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`,{
+            body: body
+        });
+        return response;
+    }
 }
 

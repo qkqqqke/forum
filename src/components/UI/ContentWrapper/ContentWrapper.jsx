@@ -1,10 +1,8 @@
 import React from 'react';
 import Loader from '../Loader/Loader';
 import classes from './ContentWrapper.module.css'
-import { Outlet, useOutlet } from 'react-router-dom';
 
 const ContentWrapper = ({ isLoading, body, user, children, ...props }) => {
-    const nestedContent = useOutlet()
 
     return (
         <div className={classes.contentWrapper}>

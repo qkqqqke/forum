@@ -5,7 +5,6 @@ import classes from './CommentField.module.css'
 const CommentField = ({ onSubmit, ...props }) => {
 
     const handleKeyDown = (e) => {
-        console.log(e)
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             onSubmit();
