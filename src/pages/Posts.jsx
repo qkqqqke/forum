@@ -25,7 +25,7 @@ function Posts() {
   const [totalPages, setTotalPages] = useState(0)
   const [limit, setLimit] = useState(10)
   const [lastLimit, setLastLimit] = useState(limit)
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(_page)
   const [template, setTemplate] = useState(postsTemplate)
   const [user, setUser] = useState({
     username: 'newUser@emile.co',
