@@ -43,6 +43,7 @@ const PostIdPage = () => {
     }, [location])
 
     const postComment = async (e) => {
+        if(comment.body === '') return
         const responce = await toast.promise(
             PostService.setNewPostComment(params.id, comment.body), {
             success: 'Successfully published',

@@ -165,6 +165,19 @@
     gap: 20px;
 }
 
+.post_title {
+    background-color: transparent;
+    color: whitesmoke;
+    width: 100%;
+    resize: none;
+    font-size: 2rem;
+    field-sizing: content;
+}
+
+.post_title:focus {
+        outline: none;
+    }
+
 .view_switcher_container>button {
     border: 1px solid whitesmoke;
     height: 100%;

@@ -63,5 +63,12 @@ export default class PostService {
         });
         return response;
     }
+
+    static async setNewPost(post){
+        const response = await axios.post(`https://jsonplaceholder.typicode.com/posts`,{
+            ...post
+        });
+        return response;
+    }
 }
 

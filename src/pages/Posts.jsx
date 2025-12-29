@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import PostService from "../API/PostService.js";
 import PostFilter from '../components/PostFilter.jsx'
-import PostForm from "../components/PostForm";
 import PostsList from '../components/PostsList.jsx';
 import Loader from "../components/UI/Loader/Loader.jsx";
-import MyModal from "../components/UI/MyModal/MyModal";
 import MyButton from "../components/UI/button/MyButton";
 import MySelect from "../components/UI/select/MySelect.jsx";
 import Pagination from "../components/UI/pagination/Pagination.jsx";
@@ -24,12 +22,16 @@ function Posts() {
   const { _page } = useParams()
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({ sort: '', query: '' });
-  const [modal, setModal] = useState(false)
   const [totalPages, setTotalPages] = useState(0)
   const [limit, setLimit] = useState(10)
   const [lastLimit, setLastLimit] = useState(limit)
   const [page, setPage] = useState(1)
   const [template, setTemplate] = useState(postsTemplate)
+  const [user, setUser] = useState({
+    username: 'newUser@emile.co',
+    imageUrl: `https://robohash.org/newUser@emile.co`
+  });
+
   const lastElement = useRef()
 
   const router = useNavigate()
@@ -78,11 +80,6 @@ function Posts() {
     setPage(_page)
   }, [location])
 
-  const createPost = (newPost) => {
-    setPosts([...posts, newPost])
-    setModal(false)
-  }
-
 
   const removePost = (post) => {
     setPosts(posts.filter((p) => post.id !== p.id))
@@ -93,12 +90,9 @@ function Posts() {
   return (
     <div className="App">
 
-      <MyButton onClick={() => setModal(true)}>
+      <MyButton onClick={() => router('/post/new-post')}>
         Создать пост
       </MyButton>
-      <MyModal visible={modal} setVisible={setModal}>
-        <PostForm create={createPost} />
-      </MyModal>
       <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
       <div className="posts__nav">

@@ -11,7 +11,7 @@ const PostViewSwitcher = ({ template, setTemplate }) => {
             </button>
 
             <button onClick={() => setTemplate({ ...template, current: 'grid' })}>
-                <GridSvg />
+                <GridSvg stroke="#e3e3e3" fill="none"/>
             </button>
         </div>
     );

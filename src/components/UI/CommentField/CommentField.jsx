@@ -7,7 +7,7 @@ const CommentField = ({ onSubmit, ...props }) => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            onSubmit();
+            if(onSubmit) onSubmit()
         }
     }
 
